@@ -1,4 +1,4 @@
-const FilterItems = ({filterValue, handleFilter}) => {
+const FilterItems = ({handleFilter}) => {
 
     return ( 
         <form 
@@ -8,7 +8,6 @@ const FilterItems = ({filterValue, handleFilter}) => {
             <input 
             type="text"
             className="w-full p-2 border border-black rounded-lg"
-            value={filterValue}
             onChange={(e) => handleFilter(e.target.value)}
             />
         </form>

@@ -1,3 +1,5 @@
+import { IoMdAddCircleOutline } from 'react-icons/io'
+
 const AddItem = ({newItems, setInputValue, inputValue}) => {
     return ( 
         <form 
@@ -12,8 +14,10 @@ const AddItem = ({newItems, setInputValue, inputValue}) => {
             />
             <button 
             type="submit"
-            className="bg-slate-600 p-5 m-auto rounded-lg text-white"
-            >Add Item
+            className="bg-slate-600 flex gap-5 items-center px-5 py-3 m-auto rounded-lg text-white"
+            >
+            Add Items
+            <IoMdAddCircleOutline size={25} />
             </button>
         </form>
      );

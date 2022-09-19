@@ -2,38 +2,29 @@ import Content from "./components/Content";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
-  const [list, setList] = useState([
-    {
-    name: 'Chocolates',
-    checked: false,
-    id:1
-    },
-    {
-    name: 'Beer',
-    checked: false,
-    id:2
-    },
-    {
-    name: 'Spicy Food',
-    checked: false,
-    id:3
-    },
-]);
+const [list, setlist] = useState([]);
 const [listFilter, setlistFilter] = useState([]);
 const [inputValue, setInputValue] = useState('');
-const [filterValue, setFiltertValue] = useState('');
 
-const addItem = (Item) => {
+useEffect(()=>{
+  const getList = JSON.parse(localStorage.getItem('GroceryList'));
+  setlist(getList);
+},[])
+
+
+const addItem = (newItem) => {
+  if(!newItem) return
   const item = {
-    name: Item,
+    name: newItem,
     checked: false,
-    id: list.length + 1
+    id: Math.random() * 100
     }
 
-  setList([...list, item]);
+  setlist([...list, item]);
+  localStorage.setItem('GroceryList', JSON.stringify([...list, item]));
 }
 
 const handleItems = (e) => {
@@ -42,11 +33,21 @@ const handleItems = (e) => {
   setInputValue('')
 }
 
-const handleFilter = (value) =>{
-  setFiltertValue(value)
-  
-  const filterArray = list.filter(items => items.name.toUpperCase().indexOf(value.toUpperCase()) === 0);
+const handleDelete = (id) => {
+  const filterArray = list.filter(items => items.id !== id)
+  setlist(filterArray)
+  localStorage.setItem('GroceryList', JSON.stringify(filterArray));
+}
 
+const handleCheck = (checked, id) => {
+  const item = list.filter(item => item.id === id)[0];
+  item.checked = checked
+  localStorage.setItem('GroceryList', JSON.stringify(list));
+}
+
+const handleFilter = (value) =>{
+  if(!value) return setlistFilter([])
+  const filterArray = list.filter(items => items.name.toUpperCase().indexOf(value.toUpperCase()) === 0);
   setlistFilter(filterArray)
 }
 
@@ -59,8 +60,9 @@ const handleFilter = (value) =>{
       newItems={handleItems} 
       inputValue={inputValue} 
       setInputValue={setInputValue} 
-      filterValue={filterValue} 
       handleFilter={handleFilter}
+      handleDelete={handleDelete}
+      handleCheck={handleCheck}
       />
       <Footer />
     </div>
